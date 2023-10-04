@@ -3,7 +3,7 @@ import { VaccinationService } from '../services/vaccination.service';
 import { UpdateVaccineDto } from '../dto/vaccine.dto';
 import { CreateRecordDto, DeleteRecordDto, UpdateRecordDto } from '../dto/record.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { UserGuard } from 'src/auth/guards/user.guard';
+import { UserGuard } from '../../auth/guards/user.guard';
 
 @ApiTags('RECORD')
 @Controller('record')
