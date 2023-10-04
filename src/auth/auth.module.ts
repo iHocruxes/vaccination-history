@@ -1,19 +1,14 @@
 import { Module } from '@nestjs/common';
-import { JwtStrategy } from './stategies/jwt.strategy';
-import { VaccinationService } from '../vaccination/services/vaccination.service';
-import { JwtModule } from '@nestjs/jwt';
-import * as dotenv from 'dotenv'
+import { DoctorStrategy } from './strategies/doctor.strategy';
+import { UserStrategy } from './strategies/user.strategy';
 
 @Module({
-    imports: [
-        JwtModule.register({
-            global: true,
-            secret: process.env.JWT_SERVICE
-        })
-    ],
     providers: [
-        JwtStrategy,
-        VaccinationService
-    ]
+        DoctorStrategy,
+        UserStrategy
+    ],
 })
 export class AuthModule { }
+
+
+

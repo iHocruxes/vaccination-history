@@ -9,12 +9,13 @@ dotenv.config()
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.setGlobalPrefix(process.env.SERVER_NAME)
   //Swagger
   const config = new DocumentBuilder()
-    .setTitle('vaccination-history')
-    .setDescription('HealthLine API description')
+    .setTitle('VACCINATION HISTORY')
+    .setDescription('Microservice dùng để cập nhật quá trình và tiêm vaccine của khách hàng')
     .setVersion('1.0')
-    .addTag('vaccination')
+    .setContact('White Hat', '', 'truonggolang@gmail.com')
     .addBearerAuth()
     .build()
   const document = SwaggerModule.createDocument(app, config)
@@ -40,8 +41,6 @@ async function bootstrap() {
     credentials: true
   })
 
-  app.setGlobalPrefix(process.env.SERVER_NAME)
-
-  await app.listen(3000);
+  await app.listen(3002);
 }
 bootstrap();

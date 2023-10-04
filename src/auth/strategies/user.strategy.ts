@@ -1,21 +1,22 @@
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt"
-import * as dotenv from "dotenv"
+import * as dotenv from 'dotenv'
+import { UnauthorizedException } from "@nestjs/common";
 
 dotenv.config()
 
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+export class UserStrategy extends PassportStrategy(Strategy, 'user') {
     constructor() {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: process.env.JWT_SECRET,
+            secretOrKey: process.env.USER_SECRET,
         })
     }
 
     async validate(payload: any) {
         return {
-            user: payload.sub,
+            id: payload.id,
             phone: payload.phone
         }
     }
