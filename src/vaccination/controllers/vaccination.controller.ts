@@ -2,7 +2,7 @@ import { Controller, Post, Patch, UseGuards, Body, Req, Delete } from '@nestjs/c
 import { VaccinationService } from '../services/vaccination.service';
 import { UpdateVaccineDto } from '../dto/vaccine.dto';
 import { CreateRecordDto, DeleteRecordDto, UpdateRecordDto } from '../dto/record.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserGuard } from 'src/auth/guards/user.guard';
 
 @ApiTags('RECORD')
@@ -17,6 +17,7 @@ export class VaccinationController {
 
     @UseGuards(UserGuard)
     @ApiBearerAuth()
+    @ApiOperation({ summary: 'Khách hàng tạo record vaccination vào hồ sơ bệnh án' })
     @Post()
     async createVaccinationRecord(
         @Body() dto: CreateRecordDto,
@@ -27,6 +28,7 @@ export class VaccinationController {
 
     @UseGuards(UserGuard)
     @ApiBearerAuth()
+    @ApiOperation({ summary: 'Khách hàng cập nhật record vaccination' })
     @Patch()
     async updateVaccinationRecord(
         @Body() dto: UpdateRecordDto,
@@ -37,6 +39,7 @@ export class VaccinationController {
 
     @UseGuards(UserGuard)
     @ApiBearerAuth()
+    @ApiOperation({ summary: 'Khách hàng xóa record vaccination' })
     @Delete()
     async deleteVaccinationRecord(
         @Body() dto: DeleteRecordDto,
