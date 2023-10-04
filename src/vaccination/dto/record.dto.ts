@@ -34,7 +34,7 @@ export class UpdateRecordDto {
     date: string
 }
 
-export class DeleteRecordDto {
+export class RecordDto {
     @IsNotEmpty()
     @IsString()
     @ApiProperty({ example: 'gYN-0oDs-EGaEwuGLRMgL' })

@@ -5,7 +5,7 @@ import { VaccinationRecords } from '../entities/record.entity';
 import { Repository } from 'typeorm';
 import { Vaccines } from '../entities/vaccine.entity';
 import { UpdateVaccineDto } from '../dto/vaccine.dto';
-import { CreateRecordDto, DeleteRecordDto, UpdateRecordDto } from '../dto/record.dto';
+import { CreateRecordDto, RecordDto, UpdateRecordDto } from '../dto/record.dto';
 import { MedicalRecord } from '../entities/medical-record.entity';
 
 @Injectable()
@@ -16,7 +16,6 @@ export class VaccinationService extends BaseService<VaccinationRecords> {
         @InjectRepository(MedicalRecord) private readonly medicalRecordRepository: Repository<MedicalRecord>
     ) {
         super(vaccinationRecordRepository)
-        this.userRecords('lOzizkS7i2lbeEcnvz8vE', 'lFul6XLZtWVZBaEQBad9o')
     }
 
     async updateVaccine(dto: UpdateVaccineDto): Promise<any> {
@@ -120,7 +119,7 @@ export class VaccinationService extends BaseService<VaccinationRecords> {
         }
     }
 
-    async deleteVaccinationRecord(user_id: string, dto: DeleteRecordDto): Promise<any> {
+    async deleteVaccinationRecord(user_id: string, dto: RecordDto): Promise<any> {
         const record = await this.vaccinationRecordRepository.findOne({
             where: { id: dto.record_id },
             relations: ['medical_record'],
@@ -144,19 +143,29 @@ export class VaccinationService extends BaseService<VaccinationRecords> {
         }
     }
 
-    async userRecords(user_id: string, medical_record_id: string): Promise<any> {
+    async userRecords(user_id: string, dto: RecordDto): Promise<any> {
         const medicalRecord = await this.medicalRecordRepository.findOne({
             where: {
                 manager_id: user_id,
-                id: medical_record_id
+                id: dto.record_id
             },
             relations: ['vaccination_record']
         })
 
         const vaccinationRecord = await this.vaccinationRecordRepository.find({
-            where: { medical_record: medicalRecord }
+            where: { medical_record: medicalRecord },
+            relations: ['vaccine']
         })
 
-        console.log(vaccinationRecord)
+        return {
+            data: vaccinationRecord
+        }
+    }
+
+    async baseVaccines(): Promise<any> {
+        const data = await this.vaccineRepository.find()
+        return {
+            data: data
+        }
     }
 }
