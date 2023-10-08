@@ -164,7 +164,7 @@ export class VaccinationService extends BaseService<VaccinationRecords> {
                 where: { id: e.id },
                 relations: ['vaccine']
             });
-            data.push(vaccination_history);
+            data.push(...vaccination_history);
         }
 
         return {
