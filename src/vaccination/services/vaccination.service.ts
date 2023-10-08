@@ -143,22 +143,17 @@ export class VaccinationService extends BaseService<VaccinationRecords> {
         }
     }
 
-    async userRecords(user_id: string, dto: RecordDto): Promise<any> {
+    async userRecords(user_id: string, record_id: string): Promise<any> {
         const medicalRecord = await this.medicalRecordRepository.findOne({
             where: {
                 manager_id: user_id,
-                id: dto.record_id
+                id: record_id
             },
             relations: ['vaccination_record']
         })
 
-        const vaccinationRecord = await this.vaccinationRecordRepository.find({
-            where: { medical_record: medicalRecord },
-            relations: ['vaccine']
-        })
-
         return {
-            data: vaccinationRecord
+            data: medicalRecord.vaccination_record
         }
     }
 

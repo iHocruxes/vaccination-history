@@ -14,6 +14,7 @@ export class CreateRecordDto {
     dose_number: number
 
     @IsNotEmpty()
+    @ApiProperty({ example: '08/05/2023' })
     date: string
 }
 

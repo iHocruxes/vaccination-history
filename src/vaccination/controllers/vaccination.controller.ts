@@ -1,8 +1,8 @@
-import { Controller, Post, Patch, UseGuards, Body, Req, Delete, Get } from '@nestjs/common';
+import { Controller, Post, Patch, UseGuards, Body, Req, Delete, Get, Param } from '@nestjs/common';
 import { VaccinationService } from '../services/vaccination.service';
 import { UpdateVaccineDto } from '../dto/vaccine.dto';
 import { CreateRecordDto, RecordDto, UpdateRecordDto } from '../dto/record.dto';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { UserGuard } from '../../auth/guards/user.guard';
 
 @ApiTags('RECORD')
@@ -17,12 +17,13 @@ export class VaccinationController {
     @UseGuards(UserGuard)
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Danh sách vaccine đã tiêm của khách hàng' })
+    @ApiParam({ name: 'medical_record', example: '7PfMRAXlyDreZ5-XuaFDV' })
     @Get()
     async vaccineRecords(
-        @Body() dto: RecordDto,
+        @Param('medical_record') record_id: string,
         @Req() req
     ): Promise<any> {
-        return await this.vaccinationService.userRecords(req.user.id, dto)
+        return await this.vaccinationService.userRecords(req.user.id, record_id)
     }
 
     @UseGuards(UserGuard)
