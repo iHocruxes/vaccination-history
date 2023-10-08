@@ -1,15 +1,18 @@
-import { Controller, Post, Patch, UseGuards, Body, Req, Delete, Get, Param } from '@nestjs/common';
+import { Controller, Post, Patch, UseGuards, Body, Req, Delete, Get, Param, Inject } from '@nestjs/common';
 import { VaccinationService } from '../services/vaccination.service';
 import { UpdateVaccineDto } from '../dto/vaccine.dto';
 import { CreateRecordDto, RecordDto, UpdateRecordDto } from '../dto/record.dto';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { UserGuard } from '../../auth/guards/user.guard';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager'
 
 @ApiTags('RECORD')
 @Controller('record')
 export class VaccinationController {
     constructor(
-        private readonly vaccinationService: VaccinationService
+        private readonly vaccinationService: VaccinationService,
+        @Inject(CACHE_MANAGER) private cacheManager: Cache
     ) {
 
     }
@@ -18,12 +21,19 @@ export class VaccinationController {
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Danh sách vaccine đã tiêm của khách hàng' })
     @ApiParam({ name: 'medical_record', example: '7PfMRAXlyDreZ5-XuaFDV' })
-    @Get()
+    @Get(':medical_record')
     async vaccineRecords(
         @Param('medical_record') record_id: string,
         @Req() req
     ): Promise<any> {
-        return await this.vaccinationService.userRecords(req.user.id, record_id)
+        const cache = await this.cacheManager.get('vaccinationHistory-' + record_id)
+        if (cache) return cache
+
+        const data = await this.vaccinationService.userRecords(req.user.id, record_id)
+
+        await this.cacheManager.set('vaccinationHistory-' + record_id, data)
+
+        return data
     }
 
     @UseGuards(UserGuard)
