@@ -41,9 +41,12 @@ export class VaccinationService extends BaseService<VaccinationRecords> {
 
     async createVaccinationRecord(user_id: string, dto: CreateRecordDto): Promise<any> {
         const medicalRecord = await this.medicalRecordRepository.findOne({
-            where: { manager_id: user_id, id: dto.medical_record },
+            where: { id: dto.medical_record },
             select: ['id']
         })
+
+        if (user_id != medicalRecord.manager_id)
+            throw new UnauthorizedException('unauthorized')
 
         const vaccine = await this.vaccineRepository.findOne({
             where: { id: dto.vaccine_id }

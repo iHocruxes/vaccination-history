@@ -3,7 +3,7 @@ import { IsDate, IsNotEmpty, IsNumber, IsString, Min } from "class-validator";
 
 export class CreateRecordDto {
     @IsNotEmpty()
-    @ApiProperty({ example: 'medical_record213' })
+    @ApiProperty({ example: '7PfMRAXlyDreZ5-XuaFDV' })
     @IsString()
     medical_record: string
 
