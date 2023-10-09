@@ -56,7 +56,8 @@ export class VaccinationService extends BaseService<VaccinationRecords> {
             throw new NotFoundException('vaccine_not_found')
 
         const injectedVaccine = await this.vaccinationRecordRepository.findOne({
-            where: { vaccine: vaccine, medical_record: medicalRecord }
+            where: { vaccine: vaccine, medical_record: medicalRecord },
+            relations: ['medical_record']
         })
 
         if (injectedVaccine)
