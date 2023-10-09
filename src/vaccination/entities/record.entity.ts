@@ -17,7 +17,7 @@ export class VaccinationRecords {
     @JoinColumn({ name: 'medical_record' })
     medical_record: MedicalRecord
 
-    @OneToOne(() => Vaccines, e => e.id, { onDelete: 'NO ACTION' })
+    @ManyToOne(() => Vaccines, e => e.id, { onDelete: 'NO ACTION' })
     @JoinColumn()
     vaccine: Vaccines
 

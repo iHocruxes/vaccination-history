@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn } from "typeorm";
 import { nanoid } from "nanoid";
 import { Min } from "class-validator";
 import { VaccinationRecords } from "./record.entity";
@@ -10,7 +10,7 @@ export class Vaccines {
     }
 
     @PrimaryColumn()
-    @OneToOne(() => VaccinationRecords, e => e.vaccine)
+    @OneToMany(() => VaccinationRecords, e => e.vaccine)
     id: string
 
     @Column()
