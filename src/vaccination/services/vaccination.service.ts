@@ -23,6 +23,7 @@ export class VaccinationService extends BaseService<VaccinationRecords> {
             where: { id: record_id },
             relations: ['medical_record']
         })
+
         return data.medical_record.id
     }
 
