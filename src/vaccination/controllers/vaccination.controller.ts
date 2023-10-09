@@ -67,6 +67,7 @@ export class VaccinationController {
         @Body() dto: RecordDto,
         @Req() req
     ) {
+        await this.cacheManager.del('vaccinationHistory-' + dto.record_id)
         return await this.vaccinationService.deleteVaccinationRecord(req.user.id, dto)
     }
 
