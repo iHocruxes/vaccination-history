@@ -56,7 +56,8 @@ export class VaccinationController {
         @Body() dto: UpdateRecordDto,
         @Req() req
     ) {
-        await this.cacheManager.del('vaccinationHistory-' + dto.record_id)
+        const cache_key = await this.vaccinationService.getMedicalRecordByVaccinationRecord(dto.record_id)
+        await this.cacheManager.del('vaccinationHistory-' + cache_key)
         return await this.vaccinationService.updateVaccinationRecord(req.user.id, dto)
     }
 
@@ -68,7 +69,8 @@ export class VaccinationController {
         @Body() dto: RecordDto,
         @Req() req
     ) {
-        await this.cacheManager.del('vaccinationHistory-' + dto.record_id)
+        const cache_key = await this.vaccinationService.getMedicalRecordByVaccinationRecord(dto.record_id)
+        await this.cacheManager.del('vaccinationHistory-' + cache_key)
         return await this.vaccinationService.deleteVaccinationRecord(req.user.id, dto)
     }
 

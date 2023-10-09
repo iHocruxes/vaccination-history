@@ -18,6 +18,14 @@ export class VaccinationService extends BaseService<VaccinationRecords> {
         super(vaccinationRecordRepository)
     }
 
+    async getMedicalRecordByVaccinationRecord(record_id: string): Promise<string> {
+        const data = await this.vaccinationRecordRepository.findOne({
+            where: { id: record_id },
+            relations: ['medical_record']
+        })
+        return data.medical_record.id
+    }
+
     async updateVaccine(dto: UpdateVaccineDto): Promise<any> {
         const vaccine = new Vaccines()
 
