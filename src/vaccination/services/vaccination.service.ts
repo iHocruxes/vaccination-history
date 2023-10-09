@@ -42,7 +42,7 @@ export class VaccinationService extends BaseService<VaccinationRecords> {
     async createVaccinationRecord(user_id: string, dto: CreateRecordDto): Promise<any> {
         const medicalRecord = await this.medicalRecordRepository.findOne({
             where: { id: dto.medical_record },
-            select: ['id']
+            select: ['id', 'manager_id']
         })
 
         if (user_id != medicalRecord.manager_id)
