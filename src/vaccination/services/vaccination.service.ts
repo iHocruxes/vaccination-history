@@ -19,10 +19,16 @@ export class VaccinationService extends BaseService<VaccinationRecords> {
     }
 
     async getMedicalRecordByVaccinationRecord(record_id: string): Promise<string> {
+        if (!record_id)
+            throw new NotFoundException('record_id_not_found')
+
         const data = await this.vaccinationRecordRepository.findOne({
             where: { id: record_id },
             relations: ['medical_record']
         })
+
+        if (!data)
+            throw new NotFoundException('vaccination_record_not_found')
 
         return data.medical_record.id
     }
@@ -92,7 +98,7 @@ export class VaccinationService extends BaseService<VaccinationRecords> {
     async updateVaccinationRecord(user_id: string, dto: UpdateRecordDto): Promise<any> {
         const record = await this.vaccinationRecordRepository.findOne({
             where: { id: dto.record_id },
-            relations: ['medical_record'],
+            relations: ['medical_record', 'vaccine'],
         })
 
         if (!record)
@@ -117,6 +123,7 @@ export class VaccinationService extends BaseService<VaccinationRecords> {
 
         record.dose_number = dto.dose_number
         record.date = dto.date
+
         const data = await this.vaccinationRecordRepository.save(record)
 
         return {

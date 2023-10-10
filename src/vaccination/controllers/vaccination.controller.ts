@@ -58,6 +58,7 @@ export class VaccinationController {
     ) {
         const cache_key = await this.vaccinationService.getMedicalRecordByVaccinationRecord(dto.record_id)
         await this.cacheManager.del('vaccinationHistory-' + cache_key)
+
         return await this.vaccinationService.updateVaccinationRecord(req.user.id, dto)
     }
 
