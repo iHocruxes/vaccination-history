@@ -91,7 +91,7 @@ export class VaccinationController {
     async userRecordsByAdmin(
         @Param('medical_record') record_id: string,
     ) {
-        return await this.userRecordsByAdmin(record_id)
+        return await this.vaccinationService.userRecordsbyAdmin(record_id)
     }
 
 }
