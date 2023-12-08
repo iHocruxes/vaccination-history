@@ -6,6 +6,7 @@ import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { UserGuard } from '../../auth/guards/user.guard';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager'
+import { AdminGuard } from 'src/auth/guards/admin.guard';
 
 @ApiTags('RECORD')
 @Controller('record')
@@ -82,5 +83,15 @@ export class VaccinationController {
     // ) {
     //     return await this.vaccinationService.updateVaccine(dto)
     // }
+
+    @UseGuards(AdminGuard)
+    @ApiBearerAuth()
+    @ApiParam({ name: 'medical_record', example: '7PfMRAXlyDreZ5-XuaFDV' })
+    @Get('user/:medical_record')
+    async userRecordsByAdmin(
+        @Param('medical_record') record_id: string,
+    ) {
+        return await this.userRecordsByAdmin(record_id)
+    }
 
 }
