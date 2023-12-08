@@ -171,11 +171,11 @@ export class VaccinationService extends BaseService<VaccinationRecords> {
             relations: ['vaccination_record']
         })
 
-        if (user_id != medicalRecord.manager_id)
-            throw new UnauthorizedException('unauthorized')
-
         if (!medicalRecord || !record_id)
             throw new NotFoundException('medical_record_not_found')
+
+        if (user_id != medicalRecord.manager_id)
+            throw new UnauthorizedException('unauthorized')
 
         const data = []
 
