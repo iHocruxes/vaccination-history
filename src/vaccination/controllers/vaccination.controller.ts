@@ -6,7 +6,7 @@ import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { UserGuard } from '../../auth/guards/user.guard';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager'
-import { AdminGuard } from 'src/auth/guards/admin.guard';
+import { AdminGuard } from '../../auth/guards/admin.guard';
 
 @ApiTags('RECORD')
 @Controller('record')
