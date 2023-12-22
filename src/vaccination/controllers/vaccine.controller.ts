@@ -18,7 +18,6 @@ export class VaccineController {
     @ApiResponse({ status: 200, description: 'Thành công' })
     @Get()
     async baseVaccines() {
-
         const cache = await this.cacheManger.get('vaccines')
         if (cache) return cache
 

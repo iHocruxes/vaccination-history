@@ -171,11 +171,11 @@ export class VaccinationService extends BaseService<VaccinationRecords> {
             relations: ['vaccination_record']
         })
 
-        if (user_id != medicalRecord.manager_id)
-            throw new UnauthorizedException('unauthorized')
-
         if (!medicalRecord || !record_id)
             throw new NotFoundException('medical_record_not_found')
+
+        if (user_id != medicalRecord.manager_id)
+            throw new UnauthorizedException('unauthorized')
 
         const data = []
 
@@ -194,6 +194,32 @@ export class VaccinationService extends BaseService<VaccinationRecords> {
 
     async baseVaccines(): Promise<any> {
         const data = await this.vaccineRepository.find()
+        return {
+            data: data
+        }
+    }
+
+    async userRecordsbyAdmin(record_id: string): Promise<any> {
+        const medicalRecord = await this.medicalRecordRepository.findOne({
+            where: {
+                id: record_id
+            },
+            relations: ['vaccination_record']
+        })
+
+        if (!medicalRecord || !record_id)
+            throw new NotFoundException('medical_record_not_found')
+
+        const data = []
+
+        for (const e of medicalRecord.vaccination_record) {
+            const vaccination_history = await this.vaccinationRecordRepository.find({
+                where: { id: e.id },
+                relations: ['vaccine']
+            });
+            data.push(...vaccination_history);
+        }
+
         return {
             data: data
         }
