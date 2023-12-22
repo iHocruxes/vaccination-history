@@ -20,7 +20,6 @@ export class VaccineController {
     async baseVaccines() {
         const cache = await this.cacheManger.get('vaccines')
         if (cache) return cache
-
         const data = await this.vaccinationService.baseVaccines()
         await this.cacheManger.set('vaccines', data, 0)
 
